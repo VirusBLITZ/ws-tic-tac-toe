@@ -1,7 +1,13 @@
+
+<template>
+  <div id="app">
+    a
+  </div>
+</template>
+
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
 
 const root = document.getElementById('app')
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -10,11 +16,6 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
   root!.style.backgroundColor = '#fff'
 }
 </script>
-
-<template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-</template>
 
 <style>
 * {
@@ -27,5 +28,6 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   height: 100vh;
+  width: 100vw;
 }
 </style>
