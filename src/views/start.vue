@@ -1,7 +1,7 @@
 <template>
   <div id="layout">
-    <startCard></startCard>
-    <startCard></startCard>
+    <startCard route="new" icon="add">New Game</startCard>
+    <startCard route="join" icon="login">Join Game</startCard>
   </div>
 </template>
 

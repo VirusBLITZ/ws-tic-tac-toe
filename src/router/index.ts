@@ -6,8 +6,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Start",
-    component: Start,
-    alias: "/start",
+    component: Start
   },
   // //     {
   // //         path: '/library',
