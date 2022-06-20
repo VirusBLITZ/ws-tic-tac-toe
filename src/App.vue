@@ -19,7 +19,7 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
 } else {
   root.style.setProperty('--app-primary', '#2A6CB8');
   root.style.setProperty('--app-bg', '#fff');
-  root.style.setProperty('--app-text', '#2A6CB8');
+  root.style.setProperty('--app-text', '#0C223B');
 }
 
 export default defineComponent({
