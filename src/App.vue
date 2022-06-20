@@ -1,33 +1,72 @@
-
 <template>
-  <div id="app">
-    a
-  </div>
+  <appBar></appBar>
+  <section id="app">
+    <router-view></router-view>
+  </section>
 </template>
 
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+<script lang="ts">
+import { defineComponent } from 'vue';
+import appBar from './components/appBar.vue'
 
-const root = document.getElementById('app')
+const app = document.getElementById('app')
+const root: HTMLElement = document.querySelector(':root')!;
+
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  root!.style.backgroundColor = '#000000'
+  root.style.setProperty('--app-primary', '#174579');
+  root.style.setProperty('--app-bg', '#0C223B');
+  root.style.setProperty('--app-text', '#eaeaea');
 } else {
-  root!.style.backgroundColor = '#fff'
+  root.style.setProperty('--app-primary', '#2A6CB8');
+  root.style.setProperty('--app-bg', '#fff');
 }
+
+export default defineComponent({
+  components: { appBar },
+  data() {
+    return {
+      type: 1,
+      title: 'Tic Tac Toe',
+      openDrawer: false
+    };
+  }
+});
 </script>
 
 <style>
+:root {
+  --mdc-theme-primary: var(--app-primary) !important;
+}
 * {
   margin: 0;
   padding: 0;
+  user-select: none;
 }
+
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+header {
+  position: static !important;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  height: 100vh;
+  background-color: var(--app-bg);
+  color: var(--app-text);
+  height: 100%;
   width: 100vw;
+}
+</style>
+
+<style>
+ 
+/* Overrides */
+.mdc-drawer__title, .mdc-drawer .mdc-deprecated-list-item{
+  color: var(--app-text) !important;
 }
 </style>
