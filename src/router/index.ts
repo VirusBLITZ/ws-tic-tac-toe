@@ -1,24 +1,29 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
 // import Recent from "../components/recent.vue";
-const Start = () => import("../views/start.vue");
+const Start = () => import("../views/start.vue")
 const Play = () => import("../views/play.vue")
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Start",
-    component: Start
+    component: Start,
   },
-  // //     {
-  // //         path: '/library',
-  // //         name: 'Library',
-  // //         component: Library
-  // //     }
-];
+  {
+    path: "/play/:id",
+    name: "Play",
+    component: Play,
+  },
+  // {
+  //   path: "/library",
+  //   name: "Library",
+  //   component: Library,
+  // },
+]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
-export default router;
+export default router
