@@ -1,28 +1,57 @@
 <template>
-  <div class="page-top-app-bar">
-    <ui-top-app-bar content-selector="#content-main" :type="type" :title="title" @nav="openDrawer = true">
-      <template #toolbar="{ toolbarItemClass }">
-        <!-- <ui-icon-button :class="toolbarItemClass" icon="github"></ui-icon-button> -->
-      </template>
-    </ui-top-app-bar>
+  <appBarRoot>
 
-    <ui-drawer v-model="openDrawer" type="modal">
-      <ui-drawer-header>
-        <ui-drawer-title>Menu</ui-drawer-title>
-      </ui-drawer-header>
-      <ui-drawer-content>
-        <ui-list>
-          <ui-item active>
-            <ui-item-first-content>
-              <ui-icon>arrow_back</ui-icon>
-            </ui-item-first-content>
-            <ui-item-text-content>Back</ui-item-text-content>
-          </ui-item>
-          <ui-list-divider></ui-list-divider>
-        </ui-list>
-      </ui-drawer-content>
-    </ui-drawer>
-  </div>
+    <div class="page-top-app-bar">
+      <ui-top-app-bar content-selector="#content-main" :type="type" :title="title" @nav="openDrawer = true">
+        <template #toolbar="{ toolbarItemClass }">
+          <ui-icon-button :class="toolbarItemClass" icon="account_circle" @click="open = true; focus()"></ui-icon-button>
+        </template>
+      </ui-top-app-bar>
+  
+      <ui-dialog v-model="open" fullscreen>
+        <ui-dialog-title>Change Username</ui-dialog-title>
+        <ui-dialog-content>
+          <ui-textfield id="username" v-model="input" fullwidth placeholder="Username" maxlength="15" with-counter>
+          </ui-textfield>
+        </ui-dialog-content>
+      </ui-dialog>
+  
+      <ui-drawer v-model="openDrawer" type="modal">
+        <ui-drawer-header>
+          <ui-drawer-title>Menu</ui-drawer-title>
+        </ui-drawer-header>
+        <ui-drawer-content>
+          <ui-list>
+            <router-link to="/">
+              <ui-item>
+                <ui-item-first-content>
+                  <ui-icon>home</ui-icon>
+                </ui-item-first-content>
+                <ui-item-text-content>Home</ui-item-text-content>
+              </ui-item>
+            </router-link>
+            <router-link to="/new">
+              <ui-item>
+                <ui-item-first-content>
+                  <ui-icon>add</ui-icon>
+                </ui-item-first-content>
+                <ui-item-text-content>Create</ui-item-text-content>
+              </ui-item>
+            </router-link>
+            <router-link to="/join">
+              <ui-item>
+                <ui-item-first-content>
+                  <ui-icon>login</ui-icon>
+                </ui-item-first-content>
+                <ui-item-text-content>Join</ui-item-text-content>
+              </ui-item>
+            </router-link>
+            <ui-list-divider></ui-list-divider>
+          </ui-list>
+        </ui-drawer-content>
+      </ui-drawer>
+    </div>
+  </appBarRoot>
 </template>
 
 <script lang="ts">
@@ -34,8 +63,35 @@ export default defineComponent({
     return {
       type: 1,
       title: 'WS TicTacToe',
-      openDrawer: false
+      openDrawer: false,
+      open: false,
+      input: '',
+      inputField: Element
     };
+  },
+  methods: {
+    focus(): void {
+      setTimeout(() => {   // Wait for animation
+        Object(document.getElementsByClassName("mdc-text-field__input"))[0].focus()
+      }, 200)
+    }
   }
 })
 </script>
+
+<style>
+
+
+h2.mdc-dialog__title {
+  color: var(--app-text) !important;
+}
+.mdc-text-field__input {
+  user-select: text !important;
+}
+</style>
+
+<style scoped>
+a {
+  text-decoration: none;
+}
+</style>
