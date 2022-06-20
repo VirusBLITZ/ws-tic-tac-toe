@@ -21,12 +21,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .mdc-button {
     background-color: var(--app-bg);
     color: var(--app-text);
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+.mdc-button__label > i {
+    color: var(--app-text) !important;
 }
 </style>
 
