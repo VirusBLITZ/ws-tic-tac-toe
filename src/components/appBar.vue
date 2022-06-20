@@ -2,7 +2,7 @@
   <div class="page-top-app-bar">
     <ui-top-app-bar content-selector="#content-main" :type="type" :title="title" @nav="openDrawer = true">
       <template #toolbar="{ toolbarItemClass }">
-        <ui-icon-button :class="toolbarItemClass" icon="file_download"></ui-icon-button>
+        <!-- <ui-icon-button :class="toolbarItemClass" icon="github"></ui-icon-button> -->
       </template>
     </ui-top-app-bar>
 
