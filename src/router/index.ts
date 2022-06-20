@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 // import Recent from "../components/recent.vue";
 const Start = () => import("../views/start.vue");
+const Play = () => import("../views/play.vue")
 
 const routes: Array<RouteRecordRaw> = [
   {
