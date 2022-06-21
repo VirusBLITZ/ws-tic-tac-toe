@@ -1,5 +1,5 @@
 <template>
-    <div id="card" v-ripple @click="$router.push(route!)">
+    <div id="card" class="border" v-ripple @click="$router.push(route!)">
         <ui-icon>{{ icon }}</ui-icon>
         <slot></slot>
         <ui-button raised>
@@ -39,8 +39,6 @@ export default defineComponent({
     width: 500px;
     height: 300px;
     height: 70%;
-    border: 1px solid rgba(255, 255, 255, 0.313);
-    border-radius: 0.3rem;
     background-color: var(--app-primary);
     display: flex;
     flex-direction: column;
