@@ -23,7 +23,7 @@ export default defineComponent({
 <style scoped>
 
 .mdc-button {
-    background-color: var(--app-bg);
+    background-color: var(--app-bg) !important;
     color: var(--app-text);
     position: absolute;
     bottom: 0;

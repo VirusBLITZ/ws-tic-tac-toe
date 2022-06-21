@@ -1,13 +1,14 @@
 <template>
   <appBar></appBar>
   <section id="app">
-    <router-view></router-view>
+    <router-view @new-game="newGame()"></router-view>
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import appBar from './components/appBar.vue'
+import router from './router';
 
 const app = document.getElementById('app')
 const root: HTMLElement = document.querySelector(':root')!;
@@ -28,9 +29,42 @@ export default defineComponent({
     return {
       type: 1,
       title: 'Tic Tac Toe',
-      openDrawer: false
+      openDrawer: false,
+
+      socket: new WebSocket('ws://192.168.0.69:4040'),
+      code: -1
     };
+  },
+  methods: {
+    newGame(): void {
+      const storage = localStorage.getItem('username')
+      let username = storage === null ? 'Anonymous' : storage
+      console.log('Sending start request')
+      this.socket.send('new ' + username)
+    },
+    onMessage(event: any) {
+      const data = String(event.data)
+      if (data.startsWith('>') && data.length === 5) {
+        console.log(data.slice(1))
+        this.code = Number(data.slice(1))
+        this.$route.meta.id = this.code
+        this.$router.replace('/loading')
+        setTimeout(() => this.$router.push(`/new/${this.code}`), 1000)
+        
+
+        console.log(this.$route)
+      }
+    }
+  },
+  mounted() {
+    this.socket.addEventListener('open', function (event) {
+      console.log('Connected to WS Server')
+    });
+
+    this.socket.addEventListener('message', this.onMessage);
+
   }
+
 });
 </script>
 
@@ -38,6 +72,7 @@ export default defineComponent({
 :root {
   --mdc-theme-primary: var(--app-primary) !important;
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -65,9 +100,9 @@ header {
 </style>
 
 <style>
- 
 /* Overrides */
-.mdc-drawer__title, .mdc-drawer .mdc-deprecated-list-item{
+.mdc-drawer__title,
+.mdc-drawer .mdc-deprecated-list-item {
   color: var(--app-text) !important;
 }
 </style>
