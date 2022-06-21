@@ -1,7 +1,7 @@
 <template>
   <appBar></appBar>
   <section id="app">
-    <router-view @new-game="newGame()"></router-view>
+    <router-view @new-game="newGame" @join-game="joinGame"></router-view>
   </section>
 </template>
 
@@ -38,21 +38,25 @@ export default defineComponent({
   methods: {
     newGame(): void {
       const storage = localStorage.getItem('username')
-      let username = storage === null ? 'Anonymous' : storage
+      let username = (storage === null || storage === "") ? 'Anonymous' : storage
       console.log('Sending start request')
       this.socket.send('new ' + username)
     },
+    joinGame(id: number) {
+      const storage = localStorage.getItem('username')
+      let username = (storage === null || storage === "") ? 'Anonymous' : storage
+      console.log('Sending join request')
+      this.socket.send(`+${id}${username}`)
+    },
     onMessage(event: any) {
       const data = String(event.data)
+      console.log(data);
       if (data.startsWith('>') && data.length === 5) {
         console.log(data.slice(1))
         this.code = Number(data.slice(1))
         this.$route.meta.id = this.code
         this.$router.replace('/loading')
-        setTimeout(() => this.$router.push(`/new/${this.code}`), 1000)
-        
-
-        console.log(this.$route)
+        setTimeout(() => this.$router.replace(`/new/${this.code}`), 1000)
       }
     }
   },
@@ -97,12 +101,30 @@ header {
   height: 100%;
   width: 100vw;
 }
+
+.border {
+  border: 1px solid rgba(255, 255, 255, 0.313);
+  border-radius: 0.3rem;
+}
 </style>
 
 <style>
 /* Overrides */
 .mdc-drawer__title,
-.mdc-drawer .mdc-deprecated-list-item {
+.mdc-drawer .mdc-deprecated-list-item,
+.mdc-text-field__input {
   color: var(--app-text) !important;
+}
+
+.mdc-snackbar__surface {
+  background-color: var(--app-primary) !important;
+}
+
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: var(--app-primary) !important;
+}
+
+.mdc-notched-outline .mdc-notched-outline--upgraded {
+  border-color: var(--app-text) !important;
 }
 </style>
