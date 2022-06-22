@@ -8,8 +8,16 @@
     <div id="link" class="border" v-tooltip="'Copy'" aria-describedby="Copy" v-copy="cpUrl" v-ripple>{{ link }} <ui-icon
         style="font-size: 70%">content_copy</ui-icon>
     </div>
+    <ui-button raised :disabled="!opponentReady">Start</ui-button>
     <div id="status" class="border">
-      <ui-spinner active size="S"></ui-spinner> waiting for players
+      <div v-if="opponent == ''" style="display: flex;align-items: center;justify-content: center;">
+        <ui-spinner active size="S"></ui-spinner> waiting for opponent
+      </div>
+      <div v-else>
+        <ui-icon>{{ opponentReady ? "check" : "close" }}</ui-icon>{{ opponent }} is {{ opponentReady ? "ready" :
+        "notready"
+        }}
+      </div>
     </div>
   </div>
 </template>
@@ -23,6 +31,8 @@ export default defineComponent({
   data() {
     return {
       lobbyId: this.$route.params.id,
+      opponent: "",
+      opponentReady: false,
       cpId: {
         text: String(this.$route.params.id),
         success: () => {
@@ -35,7 +45,7 @@ export default defineComponent({
           this.$toast("Copied Link!")
         }
       },
-      link: `https://t.bltz.cloud/join/${this.$route.params.id}`
+      link: `t.bltz.cloud/join/${this.$route.params.id}`
     }
   },
   methods: {
@@ -90,6 +100,7 @@ export default defineComponent({
   border-radius: .2rem;
   padding: 2px 8px 2px 8px;
   font-size: 1.6rem;
+  margin-bottom: 15px;
 }
 
 #link:hover {
@@ -98,6 +109,17 @@ export default defineComponent({
 
 #link:active {
   filter: brightness(40%);
+}
+
+#new>.mdc-button--raised:disabled {
+  color: var(--app-text) !important;
+  /* filter: opacity(50%); */
+}
+
+#new>.mdc-button {
+  width: 150px;
+  height: 50px;
+  border-radius: .3em;
 }
 
 #status {
@@ -109,11 +131,16 @@ export default defineComponent({
   font-size: 1.5rem;
   text-indent: .3rem;
   padding: 8px;
-  background-color: var(--app-primary);
+  background-color: var(--app-bg);
 }
 
-#status > .mdc-circular-progress__determinate-circle, #status >
-.mdc-circular-progress__indeterminate-circle-graphic {
-  stroke: var(--app-bg) !important;
+#status>div>i {
+  font-size: 1rem;
+  margin-right: .5rem;
+}
+
+#status>.mdc-circular-progress__determinate-circle,
+#status>.mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: var(--app-primary) !important;
 }
 </style>
