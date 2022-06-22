@@ -1,7 +1,7 @@
 <template>
   <appBar></appBar>
   <section id="app">
-    <router-view @new-game="newGame" @join-game="joinGame"></router-view>
+    <router-view @new-game="newGame" @join-game="joinGame" @toggle-ready="socket.send('^')" @start="socket.send('start')"></router-view>
   </section>
 </template>
 
@@ -37,6 +37,7 @@ export default defineComponent({
       clients: [],
       full: false,
       opponent: '',
+      opponentReady: false,
     };
   },
   methods: {
@@ -76,7 +77,13 @@ export default defineComponent({
               this.$route.meta.host = data.slice(1)
             }, 20);
           }, 1000);
+        else if(this.$route.name == "New") {
+          this.opponent = data.slice(1)
+        }
       } else if (data.startsWith('^')) {
+        this.opponentReady = !this.opponentReady
+
+      } else if(data.startsWith('start') && data.length == 6) {
 
       } else if(data === "full") {
         this.full = true
@@ -87,7 +94,7 @@ export default defineComponent({
   },
   mounted() {
     this.socket.addEventListener('open', function (event) {
-      console.log('Connected to WS Server')
+      console.log('Connected to Gameserver')
     });
 
     this.socket.addEventListener('message', this.onMessage);
@@ -99,6 +106,7 @@ export default defineComponent({
       clients: computed(() => this.clients),
       full: computed(() => this.full),
       opponent: computed(() => this.opponent),
+      opponentReady: computed(() => this.opponentReady),
     }
   }
 
