@@ -1,9 +1,9 @@
 <template>
   <div id="loading">
     <ui-spinner active size="L"></ui-spinner>
-    Loading {{code}}
+    Loading
     <div style="margin-top: 20px; font-weight: 600;" class="center">
-      {{ full ? "Game is full or doesn't exist" : '' }}
+      {{ full ? "Game might be full or doesn't exist" : '' }}
       <ui-button @click="$router.replace('/')">Go Home</ui-button>
     </div>
   </div>

@@ -8,14 +8,14 @@
     <div id="link" class="border" v-tooltip="'Copy'" aria-describedby="Copy" v-copy="cpUrl" v-ripple>{{ link }} <ui-icon
         style="font-size: 70%">content_copy</ui-icon>
     </div>
-    <ui-button raised :disabled="!opponentReady">Start</ui-button>
+    <ui-button raised :disabled="!opponentReady" @click="$emit('start')">Start</ui-button>
     <div id="status" class="border">
       <div v-if="opponent == ''" style="display: flex;align-items: center;justify-content: center;">
         <ui-spinner active size="S"></ui-spinner> waiting for opponent
       </div>
       <div v-else>
         <ui-icon>{{ opponentReady ? "check" : "close" }}</ui-icon>{{ opponent }} is {{ opponentReady ? "ready" :
-        "notready"
+        "not ready"
         }}
       </div>
     </div>
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, inject } from "vue"
 import router from "../router";
 
 export default defineComponent({
@@ -31,8 +31,8 @@ export default defineComponent({
   data() {
     return {
       lobbyId: this.$route.params.id,
-      opponent: "",
-      opponentReady: false,
+      opponentReady: inject('opponentReady'),
+      opponent: inject('opponent'),
       cpId: {
         text: String(this.$route.params.id),
         success: () => {
@@ -58,7 +58,8 @@ export default defineComponent({
     } else {
 
     }
-  }
+  },
+  // inject: ['opponent', 'opponentReady'],
 })
 
 </script>
