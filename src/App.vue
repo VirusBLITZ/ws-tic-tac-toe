@@ -6,6 +6,7 @@
 </template>
 
 <script lang="ts">
+import { computed } from '@vue/reactivity';
 import { defineComponent } from 'vue';
 import appBar from './components/appBar.vue'
 import router from './router';
@@ -32,7 +33,10 @@ export default defineComponent({
       openDrawer: false,
 
       socket: new WebSocket('ws://192.168.0.69:4040'),
-      code: -1
+      code: -1,
+      clients: [],
+      full: false,
+      opponent: '',
     };
   },
   methods: {
@@ -41,12 +45,18 @@ export default defineComponent({
       let username = (storage === null || storage === "") ? 'Anonymous' : storage
       console.log('Sending start request')
       this.socket.send('new ' + username)
+      router.replace('/loading')
     },
-    joinGame(id: number) {
+    joinGame(id: number): void {
       const storage = localStorage.getItem('username')
       let username = (storage === null || storage === "") ? 'Anonymous' : storage
+
+      this.$route.meta.id = id
+      this.code = id
       console.log('Sending join request')
       this.socket.send(`+${id}${username}`)
+      router.push('/loading')
+      this.$route.meta.id = id
     },
     onMessage(event: any) {
       const data = String(event.data)
@@ -54,9 +64,24 @@ export default defineComponent({
       if (data.startsWith('>') && data.length === 5) {
         console.log(data.slice(1))
         this.code = Number(data.slice(1))
-        this.$route.meta.id = this.code
-        this.$router.replace('/loading')
-        setTimeout(() => this.$router.replace(`/new/${this.code}`), 1000)
+        setTimeout(() => {
+          router.replace(`/new/${this.code}`)
+        }, 150);
+      } else if (data.startsWith('+')) {
+        if (this.$route.name != "New")
+          setTimeout(() => {
+            router.replace(`/join/${this.code}`)
+            setTimeout(() => {
+              console.log(`Setting Host to ${data.slice(1)}`);
+              this.$route.meta.host = data.slice(1)
+            }, 20);
+          }, 1000);
+      } else if (data.startsWith('^')) {
+
+      } else if(data === "full") {
+        this.full = true
+      } else {
+
       }
     }
   },
@@ -67,6 +92,14 @@ export default defineComponent({
 
     this.socket.addEventListener('message', this.onMessage);
 
+  },
+  provide() {
+    return {
+      code: computed(() => this.code),
+      clients: computed(() => this.clients),
+      full: computed(() => this.full),
+      opponent: computed(() => this.opponent),
+    }
   }
 
 });
@@ -106,6 +139,12 @@ header {
   border: 1px solid rgba(255, 255, 255, 0.313);
   border-radius: 0.3rem;
 }
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 </style>
 
 <style>
@@ -120,7 +159,8 @@ header {
   background-color: var(--app-primary) !important;
 }
 
-.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label,
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
   color: var(--app-primary) !important;
 }
 
