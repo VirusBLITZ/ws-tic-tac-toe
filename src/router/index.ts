@@ -16,6 +16,9 @@ const routes: Array<RouteRecordRaw> = [
     path: "/loading",
     name: "Loading",
     component: Loading,
+    meta: {
+      targetId: 0,
+    },
   },
   {
     path: "/play/:id",
@@ -32,6 +35,10 @@ const routes: Array<RouteRecordRaw> = [
     path: "/join/:id",
     name: "Join",
     component: Join,
+    meta: {
+      id: -1,
+      host: '...'
+    },
     alias: "/join",
   },
   // {
