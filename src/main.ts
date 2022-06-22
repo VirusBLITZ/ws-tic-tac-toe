@@ -24,4 +24,6 @@ app.use(BalmUI, {
   },
 });
 app.use(BalmUIPlus);
+
+app.config.unwrapInjectedRef = true 
 app.mount("#app");
