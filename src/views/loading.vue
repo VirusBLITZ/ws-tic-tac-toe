@@ -16,7 +16,7 @@ export default defineComponent({
   name: "Loading",
   data() {
     return {
-
+      full: inject('full'),
     }
   },
   methods: {
