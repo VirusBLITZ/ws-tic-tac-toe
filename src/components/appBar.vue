@@ -15,7 +15,7 @@
           <ui-textfield id="username" v-model="input" fullwidth placeholder="Username" maxlength="15" with-counter
             @keydown.enter="open = false" @change="setUsername">
           </ui-textfield>
-          <ui-button raised>save</ui-button>
+          <ui-button raised @click="open = false">save</ui-button>
         </ui-dialog-content>
       </ui-dialog>
 
