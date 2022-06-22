@@ -13,7 +13,7 @@
       <div v-else>
         Ready up to start the game
       </div>
-      <ui-switch v-model="ready" input-id="basic-switch-custom"></ui-switch>
+      <ui-switch v-model="ready" @update:modelValue="$emit('toggle-ready')" input-id="basic-switch"></ui-switch>
     </div>
   </div>
 </template>
