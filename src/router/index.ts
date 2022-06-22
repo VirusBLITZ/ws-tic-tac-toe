@@ -5,6 +5,7 @@ import Loading from "../views/loading.vue"
 const Play = () => import("../views/play.vue")
 const New = () => import("../views/new.vue")
 const Join = () => import("../views/join.vue")
+const Game = () => import("../views/game.vue")
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -40,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
       host: '...'
     },
     alias: "/join",
+  },
+  {
+    path: "/game/:id",
+    component: Game,
+    name: "Game",
   },
   // {
   //   path: "/library",
