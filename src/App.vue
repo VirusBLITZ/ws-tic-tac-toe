@@ -1,7 +1,8 @@
 <template>
   <appBar></appBar>
   <section id="app">
-    <router-view @new-game="newGame" @join-game="joinGame" @toggle-ready="socket.send('^')" @start="socket.send('start')"></router-view>
+    <router-view @new-game="newGame" @join-game="joinGame" @toggle-ready="socket.send('^')"
+      @start="socket.send('start')" @reset-data="resetData"></router-view>
   </section>
 </template>
 
@@ -14,7 +15,7 @@ import router from './router';
 const app = document.getElementById('app')
 const root: HTMLElement = document.querySelector(':root')!;
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { // auto dark mode
   root.style.setProperty('--app-primary', '#174579');
   root.style.setProperty('--app-bg', '#0C223B');
   root.style.setProperty('--app-text', '#eaeaea');
@@ -33,12 +34,24 @@ export default defineComponent({
       openDrawer: false,
 
       socket: new WebSocket('ws://192.168.0.69:4040'),
+      // socket: new WebSocket('ws://play.bltz.cloud:4040'),
       code: -1,
-      clients: [],
+      beginner: -1,
+      // beginner: 0,
       full: false,
       opponent: '',
       opponentReady: false,
     };
+  },
+  provide() {
+    return {
+      code: computed(() => this.code),
+      beginner: computed(() => this.beginner),
+      full: computed(() => this.full),
+      opponent: computed(() => this.opponent),
+      opponentReady: computed(() => this.opponentReady),
+      socket: computed(() => this.socket),
+    }
   },
   methods: {
     newGame(): void {
@@ -59,6 +72,12 @@ export default defineComponent({
       router.push('/loading')
       this.$route.meta.id = id
     },
+    resetData(): void {
+      this.opponent = ''
+      this.opponentReady = false
+      this.beginner = 1
+      this.full = false
+    },
     onMessage(event: any) {
       const data = String(event.data)
       console.log(data);
@@ -69,6 +88,7 @@ export default defineComponent({
           router.replace(`/new/${this.code}`)
         }, 150);
       } else if (data.startsWith('+')) {
+        this.opponent = data.slice(1)
         if (this.$route.name != "New")
           setTimeout(() => {
             router.replace(`/join/${this.code}`)
@@ -77,15 +97,17 @@ export default defineComponent({
               this.$route.meta.host = data.slice(1)
             }, 20);
           }, 1000);
-        else if(this.$route.name == "New") {
-          this.opponent = data.slice(1)
+        else if (this.$route.name == "New") {
         }
       } else if (data.startsWith('^')) {
         this.opponentReady = !this.opponentReady
 
-      } else if(data.startsWith('start') && data.length == 6) {
+      } else if (data.startsWith('start') && data.length == 6) {
+        this.beginner = Number(data.slice(5, 6))
+        console.log('Beginner: ' + this.beginner);
 
-      } else if(data === "full") {
+        this.$router.replace(`/game/${this.code}`)
+      } else if (data === "full") {
         this.full = true
       } else {
 
@@ -100,15 +122,6 @@ export default defineComponent({
     this.socket.addEventListener('message', this.onMessage);
 
   },
-  provide() {
-    return {
-      code: computed(() => this.code),
-      clients: computed(() => this.clients),
-      full: computed(() => this.full),
-      opponent: computed(() => this.opponent),
-      opponentReady: computed(() => this.opponentReady),
-    }
-  }
 
 });
 </script>
@@ -147,6 +160,7 @@ header {
   border: 1px solid rgba(255, 255, 255, 0.313);
   border-radius: 0.3rem;
 }
+
 .center {
   display: flex;
   justify-content: center;
