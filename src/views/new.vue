@@ -51,8 +51,8 @@ export default defineComponent({
   methods: {
   },
   mounted() {
+    this.$emit('reset-data')
     console.log('LOADED');
-
     if (String(this.$route.fullPath).endsWith('new') || String(this.$route.fullPath).endsWith('new/')) {
       this.$emit('new-game')
     } else {
