@@ -33,8 +33,8 @@ export default defineComponent({
       title: 'Tic Tac Toe',
       openDrawer: false,
 
-      socket: new WebSocket('ws://192.168.0.69:4040'),
-      // socket: new WebSocket('ws://play.bltz.cloud:4040'),
+      socket: new WebSocket('wss://files.bltz.cloud:4040'),
+      // socket: new WebSocket('ws://192.168.0.69:4040'),
       code: -1,
       beginner: -1,
       // beginner: 0,
@@ -50,7 +50,7 @@ export default defineComponent({
       full: computed(() => this.full),
       opponent: computed(() => this.opponent),
       opponentReady: computed(() => this.opponentReady),
-      socket: computed(() => this.socket),
+      socketInject: computed(() => this.socket),
     }
   },
   methods: {

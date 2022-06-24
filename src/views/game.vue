@@ -41,7 +41,7 @@
 
   </div>
   <div id="restartBtn">
-    <ui-button raised @click="this!.socket.send('restart')" :disabled="!game.won">Restart</ui-button>
+    <ui-button raised @click="socket.send('restart')" :disabled="!game.won">Restart</ui-button>
   </div>
 </template>
 
@@ -53,6 +53,8 @@ export default defineComponent({
   name: 'Game',
   data() {
     return {
+      opponent: inject('opponent'),
+      socket: inject('socketInject') as WebSocket,
       game: {
         board: [
           ['', '', ''],
@@ -105,7 +107,7 @@ export default defineComponent({
   unmounted() {
     this.socket.removeEventListener('message', this.onMessage);
   },
-  inject: ['opponent', 'socket', 'beginner', 'opponentReady'],
+  inject: ['opponent', 'socketInject', 'beginner', 'opponentReady'],
 })
 </script>
 
