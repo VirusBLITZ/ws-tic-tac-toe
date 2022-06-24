@@ -40,12 +40,12 @@ export default defineComponent({
         },
       },
       cpUrl: {
-        text: `https://t.bltz.cloud/join/${this.$route.params.id}`,
+        text: `https://ttt.bltz.cloud/join/${this.$route.params.id}`,
         success: () => {
           this.$toast("Copied Link!")
         }
       },
-      link: `t.bltz.cloud/join/${this.$route.params.id}`
+      link: `ttt.bltz.cloud/join/${this.$route.params.id}`
     }
   },
   methods: {
