@@ -32,8 +32,8 @@ export default defineComponent({
       type: 1,
       title: 'Tic Tac Toe',
       openDrawer: false,
-
       socket: new WebSocket('wss://files.bltz.cloud:4040'),
+      // socket: new WebSocket('ws://192.168.0.169:4040'),
       // socket: new WebSocket('ws://192.168.0.69:4040'),
       code: -1,
       beginner: -1,
